@@ -19,3 +19,13 @@ def test_duplicate_signup_is_rejected():
 
     assert response.status_code == 400
     assert response.json()["detail"] == "Student is already signed up"
+
+
+def test_unregister_participant_removes_email():
+    response = client.delete(
+        "/activities/Programming%20Class/unregister",
+        params={"email": "emma@mergington.edu"},
+    )
+
+    assert response.status_code == 200
+    assert "emma@mergington.edu" not in response.json()["participants"]
